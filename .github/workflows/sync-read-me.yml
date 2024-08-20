@@ -71,7 +71,9 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'actions@github.com'
-          git add README_sorted.md
+          git mv README_sorted.md README.md  # Rename it to README.md
+          git add README.md
+          git rm -f README_combined.md README_part1_temp.md README_part2.md # Remove intermediate files
           git commit -m "Sync and sort README sections from SimplifyJobs and Ouckah Summer2025-Internships"
           git push
         env:
