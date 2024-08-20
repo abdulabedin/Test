@@ -23,12 +23,14 @@ jobs:
           path: external_repo1
 
       # Step 3: Extract the desired portion of the README.md from SimplifyJobs/Summer2025-Internships
-      - name: Extract README.md Content from Repo 1
+      - name: Extract and Clean README.md Content from Repo 1
         run: |
-          # Extract lines between the two patterns from Repo 1
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/## We love our contributors ❤️❤️/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
+          # Extract lines between the table start and the specific comment line in Repo 1
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
+          # Remove the specific image URL if present
+          sed 's|https://i.imgur.com/u1KNU8z.png||g' README_part1_temp.md > README_part1.md
           # Debugging - Print README Part 1
-          cat README_part1_temp.md || echo "README_part1_temp.md not created"
+          cat README_part1.md || echo "README_part1.md not created"
 
       # Step 4: Check out the second external repository (Ouckah/Summer2025-Internships)
       - name: Checkout External Repo 2
@@ -38,18 +40,21 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the second external repository
           path: external_repo2
 
-      # Step 5: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships
-      - name: Extract README.md Content from Repo 2
+      # Step 5: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships, excluding the header
+      - name: Extract README.md Content from Repo 2 (Exclude Header)
         run: |
-          # Extract lines between the table header and the specified comment line in Repo 2
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '$d' > README_part2.md
+          # Extract rows excluding the header
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '1d' | sed '$d' > README_part2.md
           # Debugging - Print README Part 2
           cat README_part2.md || echo "README_part2.md not created"
 
-      # Step 6: Combine the extracted sections into a single README.md
-      - name: Combine README Sections
+      # Step 6: Combine the extracted sections into a single README.md and sort by date
+      - name: Combine and Sort README Sections
         run: |
-          cat README_part1_temp.md README_part2.md > README.md || echo "Failed to combine README sections"
+          # Combine the tables, keeping only one header, and sort by the last column (Date Posted)
+          (head -n 2 README_part1.md && tail -n +3 README_part1.md && cat README_part2.md) | sort -t '|' -k 5,5r > README.md || echo "Failed to combine README sections"
+          # Debugging - Print combined README.md
+          cat README.md || echo "README.md not created"
 
       # Step 7: Commit and push the changes to your own repository
       - name: Commit and Push Changes
