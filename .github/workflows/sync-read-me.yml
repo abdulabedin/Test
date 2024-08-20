@@ -52,17 +52,27 @@ jobs:
           # Remove the header and separator line from the second part
           sed -i '1,2d' README_part2.md
           # Combine the README parts and remove any empty lines
-          cat README_part1_temp.md README_part2.md | sed '/^$/d' > README.md || echo "Failed to combine README sections"
+          cat README_part1_temp.md README_part2.md | sed '/^$/d' > README_combined.md || echo "Failed to combine README sections"
           # Debugging - Print Combined README
-          cat README.md || echo "README.md not created"
+          cat README_combined.md || echo "README_combined.md not created"
 
-      # Step 7: Commit and push the changes to your own repository
+      # Step 7: Sort the combined table by the "Date Posted" column (latest first)
+      - name: Sort Combined Table by Date
+        run: |
+          # Extract the header
+          head -n 2 README_combined.md > README_sorted.md
+          # Sort the rest of the table by date (latest first) and append to README_sorted.md
+          tail -n +3 README_combined.md | sort -t "|" -k5,5r >> README_sorted.md
+          # Debugging - Print Sorted README
+          cat README_sorted.md || echo "README_sorted.md not created"
+
+      # Step 8: Commit and push the changes to your own repository
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'actions@github.com'
-          git add README.md
-          git commit -m "Sync README sections from SimplifyJobs and Ouckah Summer2025-Internships"
+          git add README_sorted.md
+          git commit -m "Sync and sort README sections from SimplifyJobs and Ouckah Summer2025-Internships"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use PAT_TOKEN for pushing changes
