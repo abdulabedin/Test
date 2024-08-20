@@ -61,8 +61,8 @@ jobs:
         run: |
           # Extract the header
           head -n 2 README_combined.md > README_sorted.md
-          # Sort the rest of the table by date (latest first) and append to README_sorted.md
-          tail -n +3 README_combined.md | sort -t "|" -k5,5r >> README_sorted.md
+          # Sort the rest of the table by date (latest first) using a custom sorting function
+          tail -n +3 README_combined.md | sort -t "|" -k5,5M -k5,5r >> README_sorted.md
           # Debugging - Print Sorted README
           cat README_sorted.md || echo "README_sorted.md not created"
 
