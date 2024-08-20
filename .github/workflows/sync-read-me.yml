@@ -31,7 +31,7 @@ jobs:
       # Step 4: Remove the specific image URL
       - name: Remove Image URL
         run: |
-          sed 's|https://i.imgur.com/u1KNU8z.png||g' README_temp.md > README.md
+          sed 's|https://i.imgur.com/aVnQdox.png||g' README_temp.md > README.md
 
       # Step 5: Commit and push the changes to your own repository
       - name: Commit and Push Changes
