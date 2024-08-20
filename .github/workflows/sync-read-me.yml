@@ -28,6 +28,10 @@ jobs:
           # Extract lines between the two patterns from Repo 1
           sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/## We love our contributors ❤️❤️/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
 
+      # Step 4: Debugging - Print README Part 1
+        run: |
+          cat README_part1_temp.md || echo "README_part1_temp.md not created"
+
       # Step 5: Check out the second external repository (Ouckah/Summer2025-Internships)
       - name: Checkout External Repo 2
         uses: actions/checkout@v3
@@ -42,12 +46,16 @@ jobs:
           # Extract lines between the table header and the specified comment line in Repo 2
           sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '$d' > README_part2.md
 
-      # Step 7: Combine the extracted sections into a single README.md
+      # Step 7: Debugging - Print README Part 2
+        run: |
+          cat README_part2.md || echo "README_part2.md not created"
+
+      # Step 8: Combine the extracted sections into a single README.md
       - name: Combine README Sections
         run: |
-          cat README_part1.md README_part2.md > README.md
+          cat README_part1_temp.md README_part2.md > README.md || echo "Failed to combine README sections"
 
-      # Step 8: Commit and push the changes to your own repository
+      # Step 9: Commit and push the changes to your own repository
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'GitHub Action'
