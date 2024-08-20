@@ -19,16 +19,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: SimplifyJobs/Summer2025-Internships
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the first external repository
           path: external_repo1
 
-      # Step 3: Extract and Clean README.md Content from SimplifyJobs/Summer2025-Internships
-      - name: Extract README.md Content from Repo 1
+      # Step 3: Extract the desired portion of the README.md from SimplifyJobs/Summer2025-Internships
+      - name: Extract and Clean README.md Content from Repo 1
         run: |
           # Extract lines between the table start and the specific comment line in Repo 1
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' > README_part1.md
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
           # Remove the specific image URL if present
-          sed -i 's|https://i.imgur.com/u1KNU8z.png||g' README_part1.md
+          sed 's|https://i.imgur.com/u1KNU8z.png||g' README_part1_temp.md > README_part1.md
           # Debugging - Print README Part 1
           cat README_part1.md || echo "README_part1.md not created"
 
@@ -37,24 +37,22 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: Ouckah/Summer2025-Internships
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the second external repository
           path: external_repo2
 
-      # Step 5: Extract README.md Content from Ouckah/Summer2025-Internships
-      - name: Extract README.md Content from Repo 2
+      # Step 5: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships, excluding the header
+      - name: Extract README.md Content from Repo 2 (Exclude Header)
         run: |
-          # Extract rows between the table start and the specific comment line
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '1d;$d' > README_part2.md
+          # Extract rows excluding the header
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '1d' | sed '$d' > README_part2.md
           # Debugging - Print README Part 2
           cat README_part2.md || echo "README_part2.md not created"
 
-      # Step 6: Combine the extracted sections into a single README.md
-      - name: Combine README Sections
+      # Step 6: Combine the extracted sections into a single README.md and sort by date
+      - name: Combine and Sort README Sections
         run: |
-          {
-            cat README_part1.md;
-            cat README_part2.md;
-          } > README.md
+          # Combine the tables, keeping only one header, and sort by the last column (Date Posted)
+          (head -n 2 README_part1.md && tail -n +3 README_part1.md && cat README_part2.md) | sort -t '|' -k 5,5r > README.md || echo "Failed to combine README sections"
           # Debugging - Print combined README.md
           cat README.md || echo "README.md not created"
 
@@ -67,4 +65,4 @@ jobs:
           git commit -m "Sync README sections from SimplifyJobs and Ouckah Summer2025-Internships"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use PAT_TOKEN for pushing changes
