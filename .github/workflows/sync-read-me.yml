@@ -1,8 +1,6 @@
-name: Sync README
+name: Sync README from Ouckah/Summer2025-Internships
 
 on:
-  schedule:
-    - cron: '0 * * * *' # Runs every hour (adjust as needed)
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
@@ -14,16 +12,31 @@ jobs:
       - name: Checkout This Repo
         uses: actions/checkout@v3
 
-      # Step 2: Check out the first external repository (SimplifyJobs/Summer2025-Internships)
-      - name: Checkout External Repo 1
+      # Step 2: Check out the Ouckah/Summer2025-Internships repository
+      - name: Checkout External Repo 2
         uses: actions/checkout@v3
         with:
-          repository: SimplifyJobs/Summer2025-Internships
-          token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the first external repository
-          path: external_repo1
+          repository: Ouckah/Summer2025-Internships
+          token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the second external repository
+          path: external_repo2
 
-      # Step 3: Extract the desired portion of the README.md from SimplifyJobs/Summer2025-Internships
-      - name: Extract README.md Content from Repo 1
+      # Step 3: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships
+      - name: Extract README.md Content from Repo 2
         run: |
-          # Extract lines between the two patterns from Repo 1
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/## We love our contributors ❤️❤️/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
+          # Extract lines between the table header and the specified comment line in Repo 2
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '$d' > README_part2.md
+
+      # Step 4: Debugging: Print the contents of README_part2.md
+      - name: Print README Part 2
+        run: cat README_part2.md
+
+      # Step 5: Commit and push the changes to your own repository
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'actions@github.com'
+          git add README_part2.md
+          git commit -m "Sync README section from Ouckah/Summer2025-Internships"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use PAT_TOKEN for pushing changes
