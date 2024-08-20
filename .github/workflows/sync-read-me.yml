@@ -28,10 +28,13 @@ jobs:
           # Use sed to extract lines between the two patterns
           sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/## We love our contributors ❤️❤️/p' external_repo/README.md | sed '$d' > README_temp.md
 
-      # Step 4: Remove the specific image URL
-      - name: Remove Image URL
+      # Step 4: Remove the specific image URL and Simplify link
+      - name: Remove Image URL and Simplify Link
         run: |
-          sed 's|https://i.imgur.com/aVnQdox.png||g' README_temp.md > README.md
+          # Remove the specific image URL
+          sed 's|https://i.imgur.com/u1KNU8z.png||g' README_temp.md > README_temp1.md
+          # Remove any <a> tag containing the text "Simplify"
+          sed '/<a[^>]*Simplify[^>]*>.*<\/a>/d' README_temp1.md > README.md
 
       # Step 5: Commit and push the changes to your own repository
       - name: Commit and Push Changes
