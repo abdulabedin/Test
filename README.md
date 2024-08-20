@@ -1,5 +1,3 @@
-| Company | Role | Location | Application/Link | Date Posted |
-| ------- | ---- | -------- | ---------------- | ----------- |
 | **[Plexus](https://simplify.jobs/c/Plexus)** | Intern – Product Engineer - Summer 2025 | Nampa, ID | <a href="https://plexus.wd5.myworkdayjobs.com/en-US/Plexus_Careers/job/Nampa-ID/Intern---Product-Engineer---Summer-2025_R030199?utm_source=Simplify&ref=Simplify"><img src="https://i.imgur.com/w6lyvuC.png" width="84" alt="Apply"></a> <a href="https://simplify.jobs/p/a1d15775-526b-437a-b567-4ce22e1796cf?utm_source=GHList"><img src="https://i.imgur.com/aVnQdox.png" width="30" alt="Simplify"></a> | Aug 20 |
 | **[Verkada](https://simplify.jobs/c/Verkada)** | Software Engineering Intern - Backend - Summer 2025 | San Mateo, CA | <a href="https://job-boards.greenhouse.io/verkada/jobs/4477721007?utm_source=Simplify&ref=Simplify"><img src="https://i.imgur.com/w6lyvuC.png" width="84" alt="Apply"></a> <a href="https://simplify.jobs/p/c58565b4-d15a-4b04-a45c-e0357d612cbc?utm_source=GHList"><img src="https://i.imgur.com/aVnQdox.png" width="30" alt="Simplify"></a> | Aug 19 |
 | ↳ | Software Engineering Intern - Frontend - Summer 2025 | San Mateo, CA | <a href="https://job-boards.greenhouse.io/verkada/jobs/4477761007?utm_source=Simplify&ref=Simplify"><img src="https://i.imgur.com/w6lyvuC.png" width="84" alt="Apply"></a> <a href="https://simplify.jobs/p/5c5c02d5-a49b-4fb5-8c05-4f4648b62439?utm_source=GHList"><img src="https://i.imgur.com/aVnQdox.png" width="30" alt="Simplify"></a> | Aug 19 |
@@ -190,12 +188,6 @@
 | **[Walmart](https://simplify.jobs/c/Walmart)** | 2025 Summer Intern: Software Engineer II | Bentonville, AR</br>Sunnyvale, CA | 🔒 | Apr 30 |
 | **[Divergent](https://simplify.jobs/c/Divergent)** | Summer 2025 Internship Program - Engineering | Carson, CA | 🔒 | Apr 26 |
 | **[DriveTime](https://simplify.jobs/c/drivetime)** | Control Design Intern | Dallas, TX | 🔒 | Mar 27 |
-
-<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->
-[⬆️ Back to Top ⬆️](https://github.com/SimplifyJobs/Summer2024-Internships#the-list-)
-
-| Company | Role | Location | Application/Link | Date Posted |
-| ------- | ---- | -------- | ---------------- | ----------- |
 | Figma | Software Engineer Intern | San Francisco, CA</br>New York, NY | <a href="https://job-boards.greenhouse.io/figma/jobs/5232157004"><img src="https://i.imgur.com/u1KNU8z.png" width="118" alt="Apply"></a> | Aug 19 |
 | Belvedere Trading | Software Engineer Intern | Chicago, IL</br>Boulder, CO | <a href="https://jobs.lever.co/belvederetrading/6841e5b2-65ad-4be1-9654-4565ba163cf8/"><img src="https://i.imgur.com/u1KNU8z.png" width="118" alt="Apply"></a> | Aug 19 |
 | Point72 | Data Engineer Intern | New York, NY | <a href="https://job-boards.greenhouse.io/point72/jobs/7600132002"><img src="https://i.imgur.com/u1KNU8z.png" width="118" alt="Apply"></a> | Aug 19 |
@@ -416,4 +408,3 @@
 | Chicago Trading Company | Quant Trading Analyst Intern | Chicago, IL | 🔒 | May 02 |
 | ↳ | Software Engineer Intern | Chicago, IL | 🔒 | May 01 |
 | Voloridge | Algorithm Analyst Intern | Jupiter, FL | 🔒 | May 02 |
-
