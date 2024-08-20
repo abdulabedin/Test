@@ -26,7 +26,7 @@ jobs:
       - name: Extract README.md Content from Repo 1
         run: |
           # Extract lines between the two patterns from Repo 1, excluding the unwanted section
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' | sed '/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/d' > README_part1_temp.md
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
           # Debugging - Print README Part 1
           cat README_part1_temp.md || echo "README_part1_temp.md not created"
 
@@ -49,8 +49,12 @@ jobs:
       # Step 6: Combine the extracted sections into a single README.md
       - name: Combine README Sections
         run: |
-          # Combine the README parts, remove duplicate headers and empty lines
-          cat README_part1_temp.md README_part2.md | sed '/^| Company | Role | Location | Application\/Link | Date Posted |$/d' | sed '/^| ------- | ---- | -------- | ---------------- | ----------- |$/d' | sed '/^$/d' > README.md || echo "Failed to combine README sections"
+          # Remove the header and separator line from the second part
+          sed -i '1,2d' README_part2.md
+          # Combine the README parts and remove any empty lines
+          cat README_part1_temp.md README_part2.md | sed '/^$/d' > README.md || echo "Failed to combine README sections"
+          # Debugging - Print Combined README
+          cat README.md || echo "README.md not created"
 
       # Step 7: Commit and push the changes to your own repository
       - name: Commit and Push Changes
