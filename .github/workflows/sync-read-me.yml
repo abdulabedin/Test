@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Target Repo
         uses: actions/checkout@v3
         with:
-          repository: your_username/target_repo_name # Replace with the source repo details
+          repository: abdulabedin/EMAIL # Replace with the source repo details
           path: source_repo
 
       - name: Copy README.md
