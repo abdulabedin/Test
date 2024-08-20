@@ -27,12 +27,10 @@ jobs:
         run: |
           # Extract lines between the two patterns from Repo 1
           sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/## We love our contributors ❤️❤️/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
-
-      # Step 4: Debugging - Print README Part 1
-        run: |
+          # Debugging - Print README Part 1
           cat README_part1_temp.md || echo "README_part1_temp.md not created"
 
-      # Step 5: Check out the second external repository (Ouckah/Summer2025-Internships)
+      # Step 4: Check out the second external repository (Ouckah/Summer2025-Internships)
       - name: Checkout External Repo 2
         uses: actions/checkout@v3
         with:
@@ -40,22 +38,20 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the second external repository
           path: external_repo2
 
-      # Step 6: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships
+      # Step 5: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships
       - name: Extract README.md Content from Repo 2
         run: |
           # Extract lines between the table header and the specified comment line in Repo 2
           sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '$d' > README_part2.md
-
-      # Step 7: Debugging - Print README Part 2
-        run: |
+          # Debugging - Print README Part 2
           cat README_part2.md || echo "README_part2.md not created"
 
-      # Step 8: Combine the extracted sections into a single README.md
+      # Step 6: Combine the extracted sections into a single README.md
       - name: Combine README Sections
         run: |
           cat README_part1_temp.md README_part2.md > README.md || echo "Failed to combine README sections"
 
-      # Step 9: Commit and push the changes to your own repository
+      # Step 7: Commit and push the changes to your own repository
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'GitHub Action'
