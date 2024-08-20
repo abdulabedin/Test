@@ -60,11 +60,15 @@ jobs:
           # Sort the combined content by the "Date Posted" column (column 5)
           sort -t '|' -k 5,5r combined.md > README.md || echo "Failed to combine and sort README sections"
 
-      # Step 7: Commit and push the changes to your own repository
+      # Step 7: Clean up intermediate files
+      - name: Clean Up
+        run: |
+          rm -f README_part1.md README_part1_temp.md README_part2.md combined.md
+          rm -rf external_repo1 external_repo2
+
+      # Step 8: Commit and push the changes to your own repository
       - name: Commit and Push Changes
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'actions@github.com'
           git add README.md
           git commit -m "Sync README sections from SimplifyJobs and Ouckah Summer2025-Internships"
           git push
