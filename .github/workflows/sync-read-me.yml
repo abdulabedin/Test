@@ -25,8 +25,8 @@ jobs:
       # Step 3: Extract the desired portion of the README.md
       - name: Extract README.md Content
         run: |
-          # Use sed to extract lines from the pattern to the end of the file
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,$p' external_repo/README.md > README.md
+          # Use sed to extract lines between the two patterns
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/## We love our contributors ❤️❤️/p' external_repo/README.md | sed '$d' > README.md
 
       # Step 4: Commit and push the changes to your own repository
       - name: Commit and Push Changes
