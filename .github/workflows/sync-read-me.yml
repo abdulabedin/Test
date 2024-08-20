@@ -23,12 +23,12 @@ jobs:
           path: external_repo1
 
       # Step 3: Extract and Clean README.md Content from SimplifyJobs/Summer2025-Internships
-      - name: Extract and Clean README.md Content from Repo 1
+      - name: Extract README.md Content from Repo 1
         run: |
           # Extract lines between the table start and the specific comment line in Repo 1
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' > README_part1_temp.md
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo1/README.md | sed '$d' > README_part1.md
           # Remove the specific image URL if present
-          sed 's|https://i.imgur.com/u1KNU8z.png||g' README_part1_temp.md > README_part1.md
+          sed -i 's|https://i.imgur.com/u1KNU8z.png||g' README_part1.md
           # Debugging - Print README Part 1
           cat README_part1.md || echo "README_part1.md not created"
 
@@ -40,11 +40,11 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           path: external_repo2
 
-      # Step 5: Extract the desired portion of the README.md from Ouckah/Summer2025-Internships, excluding the header
-      - name: Extract README.md Content from Repo 2 (Exclude Header)
+      # Step 5: Extract README.md Content from Ouckah/Summer2025-Internships
+      - name: Extract README.md Content from Repo 2
         run: |
-          # Extract rows excluding the header
-          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '1d' | sed '$d' > README_part2.md
+          # Extract rows between the table start and the specific comment line
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,/<!-- Please leave a one line gap between this and the table TABLE_END (DO NOT CHANGE THIS LINE) -->/p' external_repo2/README.md | sed '1d;$d' > README_part2.md
           # Debugging - Print README Part 2
           cat README_part2.md || echo "README_part2.md not created"
 
@@ -52,23 +52,17 @@ jobs:
       - name: Combine README Sections
         run: |
           {
-            head -n 2 README_part1.md;
-            tail -n +3 README_part1.md;
+            cat README_part1.md;
             cat README_part2.md;
-          } > combined.md
-          
-          # Sort the combined content by the "Date Posted" column (column 5)
-          sort -t '|' -k 5,5r combined.md > README.md || echo "Failed to combine and sort README sections"
+          } > README.md
+          # Debugging - Print combined README.md
+          cat README.md || echo "README.md not created"
 
-      # Step 7: Clean up intermediate files
-      - name: Clean Up
-        run: |
-          rm -f README_part1.md README_part1_temp.md README_part2.md combined.md
-          rm -rf external_repo1 external_repo2
-
-      # Step 8: Commit and push the changes to your own repository
+      # Step 7: Commit and push the changes to your own repository
       - name: Commit and Push Changes
         run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'actions@github.com'
           git add README.md
           git commit -m "Sync README sections from SimplifyJobs and Ouckah Summer2025-Internships"
           git push
