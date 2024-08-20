@@ -1,0 +1,30 @@
+name: Sync README
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour (adjust as needed)
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Target Repo
+        uses: actions/checkout@v3
+        with:
+          repository: your_username/target_repo_name # Replace with the source repo details
+          path: source_repo
+
+      - name: Copy README.md
+        run: cp source_repo/README.md ./README.md
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'actions@github.com'
+          git add README.md
+          git commit -m "Sync README from target_repo_name"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
