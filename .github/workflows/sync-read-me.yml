@@ -18,13 +18,15 @@ jobs:
       - name: Checkout External Repo
         uses: actions/checkout@v3
         with:
-          repository: SimplifyJobs/Summer2025-Internships # Replace with the external repo details
+          repository: external_owner/external_repo_name # Replace with the external repo details
           token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the external repository
           path: external_repo
 
-      # Step 3: Copy the README.md from the external repository to your own repository
-      - name: Copy README.md
-        run: cp external_repo/README.md ./README.md
+      # Step 3: Extract the desired portion of the README.md
+      - name: Extract README.md Content
+        run: |
+          # Use sed to extract lines from the pattern to the end of the file
+          sed -n '/| Company | Role | Location | Application\/Link | Date Posted |/,$p' external_repo/README.md > README.md
 
       # Step 4: Commit and push the changes to your own repository
       - name: Commit and Push Changes
