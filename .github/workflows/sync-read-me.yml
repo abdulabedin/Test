@@ -18,7 +18,7 @@ jobs:
       - name: Checkout External Repo
         uses: actions/checkout@v3
         with:
-          repository: external_owner/external_repo_name # Replace with the external repo details
+          repository: SimplifyJobs/Summer2025-Internships # Replace with the external repo details
           token: ${{ secrets.PAT_TOKEN }} # Use PAT to access the external repository
           path: external_repo
 
