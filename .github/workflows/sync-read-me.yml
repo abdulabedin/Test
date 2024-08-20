@@ -10,15 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out your own repository where the workflow is running
+      - name: Checkout This Repo
+        uses: actions/checkout@v3
+
+      # Step 2: Check out the target repository where you want to copy the README from
       - name: Checkout Target Repo
         uses: actions/checkout@v3
         with:
           repository: abdulabedin/EMAIL # Replace with the source repo details
           path: source_repo
 
+      # Step 3: Copy the README.md from the target repository to your own repository
       - name: Copy README.md
         run: cp source_repo/README.md ./README.md
 
+      # Step 4: Commit and push the changes to your own repository
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'GitHub Action'
